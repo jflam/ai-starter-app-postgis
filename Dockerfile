@@ -20,6 +20,7 @@ COPY --from=build /app/package*.json ./
 COPY --from=build /app/migrations ./migrations
 COPY --from=build /app/scripts ./scripts
 COPY --from=build /app/data ./data
+COPY --from=build /app/src/server ./src/server
 
 RUN chmod +x ./scripts/entrypoint.sh
 RUN chmod +x ./scripts/wait-for-it.sh

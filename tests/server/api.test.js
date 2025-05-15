@@ -1,50 +1,48 @@
 // Import required modules
-const request = require('supertest');
-const express = require('express');
+import request from 'supertest';
+import app from '../../src/server/simplified-server.js';
 
-// Create a simple Express app for testing
-const app = express();
+// Add Jest environment globals
+/* global describe, it, expect, jest */
 
-// Add health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', time: new Date().toISOString() });
-});
-
-// Add restaurants endpoint
-app.get('/api/restaurants', (req, res) => {
-  res.json([
-    {
-      id: 1,
-      name: 'Test Restaurant',
-      city: 'Seattle',
-      cuisine_type: 'Pizza',
-      location: {
-        type: 'Point',
-        coordinates: [-122.3321, 47.6062]
-      }
+// Mock the database connection
+jest.mock('../../src/server/db.js', () => {
+  return {
+    pool: {
+      query: jest.fn().mockImplementation((query, params) => {
+        // Return mock data based on the query
+        if (query.includes('restaurants/nearby')) {
+          return Promise.resolve({
+            rows: [{
+              id: 1,
+              name: 'Test Restaurant',
+              city: 'Seattle',
+              cuisine_type: 'Pizza',
+              location_geojson: JSON.stringify({
+                type: 'Point',
+                coordinates: [params[0], params[1]]
+              }),
+              distance_km: 0.5
+            }]
+          });
+        } else {
+          return Promise.resolve({
+            rows: [{
+              id: 1,
+              name: 'Test Restaurant',
+              city: 'Seattle',
+              cuisine_type: 'Pizza',
+              location_geojson: JSON.stringify({
+                type: 'Point',
+                coordinates: [-122.3321, 47.6062]
+              }),
+              now: new Date().toISOString()
+            }]
+          });
+        }
+      })
     }
-  ]);
-});
-
-// Add nearby restaurants endpoint
-app.get('/api/restaurants/nearby', (req, res) => {
-  const lon = parseFloat(req.query.lon) || -122.3321;
-  const lat = parseFloat(req.query.lat) || 47.6062;
-  const km = parseFloat(req.query.km) || 5;
-  
-  res.json([
-    {
-      id: 1,
-      name: 'Test Restaurant',
-      city: 'Seattle',
-      cuisine_type: 'Pizza',
-      location: {
-        type: 'Point',
-        coordinates: [lon, lat]
-      },
-      distance_km: 0.5
-    }
-  ]);
+  };
 });
 
 // Test the endpoints

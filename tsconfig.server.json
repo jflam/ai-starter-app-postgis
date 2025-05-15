@@ -14,6 +14,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "include": ["src/server/**/*", "scripts/**/*"],
-  "exclude": ["node_modules", "dist", "src/client"]
+  "include": ["scripts/**/*"],
+  "exclude": ["node_modules", "dist", "src/client", "src/server"]
 }

@@ -1,24 +1,7 @@
-// Simple Express server with pg Pool
+// Simple Express server
 import express from 'express';
 import cors from 'cors';
-import { Pool } from 'pg';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-// Create a database connection pool
-const connectionString = process.env.DATABASE_URL;
-const pool = new Pool({
-  connectionString: connectionString || 'postgres://postgres:postgres@localhost:5432/app_db',
-  connectionTimeoutMillis: 5000,
-  idleTimeoutMillis: 30000,
-  max: 10
-});
-
-// Test connection
-pool.query('SELECT NOW()')
-  .then(() => console.log('Database connection established'))
-  .catch(err => console.error('Database connection failed:', err));
+import { pool } from './db.js';
 
 // Create Express application
 const app = express();
@@ -162,9 +145,8 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // Handle graceful shutdown
-process.on('SIGTERM', async () => {
+process.on('SIGTERM', () => {
   console.log('SIGTERM received, shutting down gracefully');
-  await pool.end();
   process.exit(0);
 });
 
