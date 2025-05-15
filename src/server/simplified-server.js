@@ -37,6 +37,11 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
+// Endpoint to provide Mapbox token to the client
+app.get('/api/config/mapbox', (_req, res) => {
+  res.json({ token: process.env.MAPBOX_TOKEN || '' });
+});
+
 // Get all restaurants
 app.get('/api/restaurants', async (_req, res) => {
   try {

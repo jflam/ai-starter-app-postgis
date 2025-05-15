@@ -43,6 +43,24 @@ const RestaurantMap: React.FC = () => {
   const { location, loading: locationLoading } = useUserLocation();
   const [searchDistance, setSearchDistance] = useState(5);
   const [mode, setMode] = useState<'nearby' | 'all'>('nearby');
+  const [mapboxToken, setMapboxToken] = useState('');
+  
+  // Fetch Mapbox token from server
+  useEffect(() => {
+    const fetchMapboxToken = async () => {
+      try {
+        const response = await fetch('/api/config/mapbox');
+        const data = await response.json();
+        if (data.token) {
+          setMapboxToken(data.token);
+        }
+      } catch (error) {
+        console.error('Failed to fetch Mapbox token:', error);
+      }
+    };
+    
+    fetchMapboxToken();
+  }, []);
   
   // Use either nearby or all restaurants based on mode
   const {
@@ -110,8 +128,8 @@ const RestaurantMap: React.FC = () => {
         style={{ height: '500px', width: '100%' }}
       >
         <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`}
+          attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         />
         
         <RecenterOnChange position={mapPosition} />
