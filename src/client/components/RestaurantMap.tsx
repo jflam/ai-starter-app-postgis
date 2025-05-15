@@ -7,6 +7,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster';
 import { useUserLocation, useNearbyRestaurants, useAllRestaurants, Restaurant } from '../hooks/useRestaurants';
 import RestaurantList from './RestaurantList';
+import FilterBar from './FilterBar';
 import { useCluster } from '../hooks/useCluster';
 
 // Component to recenter map when location changes
@@ -44,6 +45,8 @@ const RestaurantMap: React.FC = () => {
   const [searchDistance, setSearchDistance] = useState(5);
   const [mode, setMode] = useState<'nearby' | 'all'>('nearby');
   const [mapboxToken, setMapboxToken] = useState('');
+  const [cuisineFilter, setCuisineFilter] = useState('All');
+  const [priceFilter, setPriceFilter] = useState('All');
   
   // Fetch Mapbox token from server
   useEffect(() => {
@@ -79,12 +82,45 @@ const RestaurantMap: React.FC = () => {
     error: allError
   } = useAllRestaurants();
   
-  // Determine which set of restaurants to display
+  // Determine which set of restaurants to display and apply filters
   const { restaurants, isLoading, error } = useMemo(() => {
-    return mode === 'nearby'
+    // First, select nearby or all restaurants
+    const baseRestaurants = mode === 'nearby'
       ? { restaurants: nearbyRestaurants, isLoading: nearbyLoading, error: nearbyError }
       : { restaurants: allRestaurants, isLoading: allLoading, error: allError };
-  }, [mode, nearbyRestaurants, nearbyLoading, nearbyError, allRestaurants, allLoading, allError]);
+    
+    // Then apply filters
+    let filteredRestaurants = [...baseRestaurants.restaurants];
+    
+    // Apply cuisine filter
+    if (cuisineFilter !== 'All') {
+      filteredRestaurants = filteredRestaurants.filter(
+        restaurant => restaurant.cuisine_type.includes(cuisineFilter)
+      );
+    }
+    
+    // Apply price filter
+    if (priceFilter !== 'All') {
+      filteredRestaurants = filteredRestaurants.filter(
+        restaurant => restaurant.price_range === priceFilter
+      );
+    }
+    
+    return {
+      ...baseRestaurants,
+      restaurants: filteredRestaurants
+    };
+  }, [
+    mode,
+    nearbyRestaurants,
+    nearbyLoading,
+    nearbyError,
+    allRestaurants,
+    allLoading,
+    allError,
+    cuisineFilter,
+    priceFilter
+  ]);
 
   if (locationLoading) {
     return <div>Loading location...</div>;
@@ -100,14 +136,23 @@ const RestaurantMap: React.FC = () => {
   
   return (
     <div>
-      <div className="controls">
-        <button 
+      <FilterBar
+        cuisineFilter={cuisineFilter}
+        setCuisineFilter={setCuisineFilter}
+        priceFilter={priceFilter}
+        setPriceFilter={setPriceFilter}
+      />
+      
+      <div className="map-controls">
+        <button
+          className={`control-button ${mode === 'nearby' ? 'active' : ''}`}
           onClick={() => setMode('nearby')}
           disabled={mode === 'nearby'}
         >
           Nearby Restaurants
         </button>
-        <button 
+        <button
+          className={`control-button ${mode === 'all' ? 'active' : ''}`}
           onClick={() => setMode('all')}
           disabled={mode === 'all'}
         >
@@ -115,9 +160,9 @@ const RestaurantMap: React.FC = () => {
         </button>
         
         {mode === 'nearby' && (
-          <DistanceControl 
-            value={searchDistance} 
-            onChange={setSearchDistance} 
+          <DistanceControl
+            value={searchDistance}
+            onChange={setSearchDistance}
           />
         )}
       </div>

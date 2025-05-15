@@ -28,8 +28,33 @@ body {
 }
 
 h1 {
-  font-size: 2em;
+  font-size: 2.5em;
   line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+/* App Header Styling */
+.app-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.app-header h1 {
+  background: linear-gradient(135deg, #2196F3, #00BCD4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  font-weight: 800;
+}
+
+.app-header p {
+  color: #666;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 @media (prefers-color-scheme: light) {
@@ -238,11 +263,92 @@ h1 {
   }
 }
 
-.controls {
+/* Filter Bar Styling */
+.filter-bar {
+  background: linear-gradient(135deg, #2196F3, #00BCD4);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.filter-section {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-section h3 {
+  color: white;
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filter-button {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.filter-button.active {
+  background-color: white;
+  color: #0288D1;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Map Controls Styling */
+.map-controls {
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.control-button {
+  background-color: #f0f7ff;
+  border: none;
+  color: #0066cc;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.control-button:hover:not(:disabled) {
+  background-color: #e0f0ff;
+}
+
+.control-button.active {
+  background-color: #0066cc;
+  color: white;
+}
+
+.control-button:disabled {
+  opacity: 0.7;
+  cursor: default;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -289,5 +395,32 @@ h1 {
   .count-badge {
     background-color: #1a3a5a;
     color: #89c4ff;
+  }
+  
+  /* Dark mode for new components */
+  .app-header {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .app-header p {
+    color: #aaa;
+  }
+  
+  .filter-bar {
+    background: linear-gradient(135deg, #0D47A1, #006064);
+  }
+  
+  .control-button {
+    background-color: #1a3a5a;
+    color: #89c4ff;
+  }
+  
+  .control-button:hover:not(:disabled) {
+    background-color: #2a4a6a;
+  }
+  
+  .control-button.active {
+    background-color: #4a7aba;
+    color: white;
   }
 }

@@ -2,9 +2,9 @@ import React from 'react';
 
 const Header: React.FC = () => {
   return (
-    <header>
-      <h1>Restaurant Explorer</h1>
-      <p>Find the best restaurants in your area using our interactive map</p>
+    <header className="app-header">
+      <h1>Top Asian Noodles</h1>
+      <p>Discover the finest Asian noodle restaurants in your area</p>
     </header>
   );
 };
