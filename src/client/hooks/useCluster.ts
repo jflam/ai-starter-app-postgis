@@ -12,18 +12,20 @@ export function useCluster(map: L.Map | null, restaurants: Restaurant[]) {
     
     // Add markers to the cluster
     restaurants.forEach(restaurant => {
+      if (!restaurant.location || !restaurant.location.coordinates) return;
+      
       const coords = restaurant.location.coordinates;
       const marker = L.marker([coords[1], coords[0]]);
       
-      // Create popup content
+      // Create popup content with safe property access
       const popupContent = `
         <div class="restaurant-popup">
-          <h3>${restaurant.name}</h3>
-          <p><strong>Cuisine:</strong> ${restaurant.cuisine_type}</p>
-          <p><strong>Specialty:</strong> ${restaurant.specialty}</p>
-          <p><strong>Rating:</strong> ${restaurant.yelp_rating} ⭐</p>
-          <p><strong>Price:</strong> ${restaurant.price_range}</p>
-          <p><strong>Address:</strong> ${restaurant.address}, ${restaurant.city}</p>
+          <h3>${restaurant.name || 'Unknown Restaurant'}</h3>
+          <p><strong>Cuisine:</strong> ${restaurant.cuisine_type || 'Various'}</p>
+          ${restaurant.specialty ? `<p><strong>Specialty:</strong> ${restaurant.specialty}</p>` : ''}
+          ${restaurant.yelp_rating ? `<p><strong>Rating:</strong> ${restaurant.yelp_rating} ⭐</p>` : ''}
+          ${restaurant.price_range ? `<p><strong>Price:</strong> ${restaurant.price_range}</p>` : ''}
+          ${restaurant.address ? `<p><strong>Address:</strong> ${restaurant.address}${restaurant.city ? `, ${restaurant.city}` : ''}</p>` : ''}
           ${restaurant.distance_km ? `<p><strong>Distance:</strong> ${restaurant.distance_km} km</p>` : ''}
         </div>
       `;

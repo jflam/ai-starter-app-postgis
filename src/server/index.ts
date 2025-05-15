@@ -40,6 +40,28 @@ app.get('/api/restaurants', (_req, res) => {
   ]);
 });
 
+// Nearby restaurants endpoint
+app.get('/api/restaurants/nearby', (req, res) => {
+  const lon = parseFloat(req.query.lon as string) || -122.3321;
+  const lat = parseFloat(req.query.lat as string) || 47.6062;
+  const km = parseFloat(req.query.km as string) || 5;
+  
+  // For demonstration, return the same restaurant with distance
+  res.json([
+    {
+      id: 1,
+      name: 'Test Restaurant',
+      city: 'Seattle',
+      cuisine_type: 'Pizza',
+      location: {
+        type: 'Point',
+        coordinates: [lon, lat]
+      },
+      distance_km: 0.5
+    }
+  ]);
+});
+
 // Start server
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
