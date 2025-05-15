@@ -18,10 +18,12 @@ const RestaurantList: React.FC<RestaurantListProps> = ({ restaurants, isLoading 
 
   return (
     <div className="restaurant-list">
-      <h2>Restaurants {restaurants.length > 0 ? `(${restaurants.length})` : ''}</h2>
-      {restaurants.map(restaurant => (
-        <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-      ))}
+      <h2 className="section-title">Restaurants <span className="count-badge">{restaurants.length}</span></h2>
+      <div className="restaurant-grid">
+        {restaurants.map(restaurant => (
+          <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+        ))}
+      </div>
     </div>
   );
 };
