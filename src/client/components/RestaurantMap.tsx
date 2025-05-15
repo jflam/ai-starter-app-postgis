@@ -127,22 +127,44 @@ const RestaurantMap: React.FC = () => {
         zoom={12} 
         style={{ height: '500px', width: '100%' }}
       >
-        <TileLayer
-          url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`}
-          attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        />
+        {mapboxToken ? (
+          <TileLayer
+            url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`}
+            attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          />
+        ) : (
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#f0f0f0',
+            zIndex: 1000
+          }}>
+            Loading map...
+          </div>
+        )}
         
         <RecenterOnChange position={mapPosition} />
         
-        {/* User location marker */}
-        {location && (
-          <Marker position={[location.lat, location.lng]}>
-            <Popup>You are here</Popup>
-          </Marker>
+        {/* Only render markers when we have a token */}
+        {mapboxToken && (
+          <>
+            {/* User location marker */}
+            {location && (
+              <Marker position={[location.lat, location.lng]}>
+                <Popup>You are here</Popup>
+              </Marker>
+            )}
+            
+            {/* Render restaurant markers with clustering */}
+            <ClusteredMarkers restaurants={restaurants} />
+          </>
         )}
-        
-        {/* Render restaurant markers with clustering */}
-        <ClusteredMarkers restaurants={restaurants} />
       </MapContainer>
       
       <RestaurantList restaurants={restaurants} isLoading={isLoading} />
