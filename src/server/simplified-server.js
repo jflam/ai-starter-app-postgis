@@ -1,35 +1,16 @@
-import express from 'express';
-import cors from 'cors';
-import * as dotenv from 'dotenv';
-// Import the Pool directly since we're having module resolution issues
-import { Pool } from 'pg';
-
-// Load environment variables
-dotenv.config();
+// Simple Express server with pg Pool
+const express = require('express');
+const cors = require('cors');
+const { Pool } = require('pg');
+require('dotenv').config();
 
 // Create a database connection pool
 const connectionString = process.env.DATABASE_URL;
-
-if (!connectionString) {
-  console.warn('DATABASE_URL environment variable is not set, using default connection');
-}
-
-// Create the pool
 const pool = new Pool({
   connectionString: connectionString || 'postgres://postgres:postgres@localhost:5432/app_db',
-  // For Docker environments, set more aggressive timeouts
   connectionTimeoutMillis: 5000,
   idleTimeoutMillis: 30000,
-  max: 10, // Set max pool size
-});
-
-// Add hook to capture connection errors
-pool.on('error', (err) => {
-  console.error('Unexpected error on idle client', err);
-  // Don't crash the app in development mode
-  if (process.env.NODE_ENV === 'production') {
-    process.exit(-1);
-  }
+  max: 10
 });
 
 // Test connection
@@ -45,7 +26,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Simple logging middleware
+// Logging middleware
 app.use((req, _res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
   next();
@@ -120,9 +101,9 @@ app.get('/api/restaurants', async (_req, res) => {
 // Get nearby restaurants
 app.get('/api/restaurants/nearby', async (req, res) => {
   try {
-    const lon = parseFloat(req.query.lon as string) || -122.3321;
-    const lat = parseFloat(req.query.lat as string) || 47.6062;
-    const km = parseFloat(req.query.km as string) || 5;
+    const lon = parseFloat(req.query.lon) || -122.3321;
+    const lat = parseFloat(req.query.lat) || 47.6062;
+    const km = parseFloat(req.query.km) || 5;
     
     const { rows } = await pool.query(`
       SELECT 
@@ -163,7 +144,7 @@ app.get('/api/restaurants/nearby', async (req, res) => {
         cuisine_type: 'Pizza',
         location: {
           type: 'Point',
-          coordinates: [parseFloat(req.query.lon as string) || -122.3321, parseFloat(req.query.lat as string) || 47.6062]
+          coordinates: [parseFloat(req.query.lon) || -122.3321, parseFloat(req.query.lat) || 47.6062]
         },
         distance_km: 0.5
       }
@@ -178,5 +159,12 @@ if (process.env.NODE_ENV !== 'test') {
   });
 }
 
+// Handle graceful shutdown
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  await pool.end();
+  process.exit(0);
+});
+
 // Export for testing
-export default app;
+module.exports = app;

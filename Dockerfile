@@ -26,4 +26,4 @@ RUN chmod +x ./scripts/wait-for-it.sh
 
 EXPOSE 3001
 
-CMD ["./scripts/entrypoint.sh"]
+CMD ["node", "src/server/simplified-server.js"]

@@ -13,7 +13,10 @@ A modern full-stack application template with spatial data capabilities built wi
 - SQL-first approach with node-pg-migrate for migrations
 - Raw SQL queries using pg driver (no ORM)
 - Leaflet for interactive maps
-- Spatial queries with PostGIS
+- Spatial queries with PostGIS:
+  - Find restaurants within a specified radius
+  - Calculate distances between points
+  - Store and retrieve geographic coordinates
 - Comprehensive testing setup with Vitest, Jest, and Playwright
 - Docker Compose configuration for local development
 - Multi-stage Docker build for production
@@ -40,9 +43,32 @@ npm run migrate
 # Seed the database
 npm run seed
 
+# Verify database setup
+node scripts/check-db.js
+
 # Start development servers (both frontend and backend)
 npm run dev
 ```
+
+## Database
+
+The application uses PostgreSQL with the PostGIS extension for spatial data handling. This enables:
+
+- Storing restaurant locations as geometric points using the POINT data type
+- Querying restaurants within a certain distance of a location using ST_DWithin
+- Calculating the distance between points using ST_Distance
+
+Key SQL queries used in the application:
+
+```sql
+-- Find all restaurants within a 5km radius of a point
+SELECT id, name, ST_Distance(location::geography, ST_MakePoint(-122.3321, 47.6062)::geography) / 1000 AS distance_km
+FROM restaurants
+WHERE ST_DWithin(location::geography, ST_MakePoint(-122.3321, 47.6062)::geography, 5000)
+ORDER BY distance_km;
+```
+
+For more information on database setup and management, see [DATABASE.md](DATABASE.md).
 
 ## Directory Structure
 

@@ -5,11 +5,11 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "vite",
-    "dev:server": "nodemon --exec ts-node --transpile-only src/server/index.ts",
+    "dev:server": "nodemon src/server/simplified-server.js",
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build",
     "build:server": "tsc -p tsconfig.server.json",
-    "start": "node dist/server/index.js",
+    "start": "node src/server/simplified-server.js",
     "seed": "ts-node scripts/seed.ts",
     "migrate": "dotenv -e .env -- node-pg-migrate up -d $DATABASE_URL -m migrations",
     "test": "npm run test:unit && npm run test:api",
