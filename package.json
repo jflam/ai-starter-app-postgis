@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "vite",
-    "dev:server": "nodemon --exec ts-node src/server/index.ts",
-    "build": "vite build && tsc -p tsconfig.server.json",
+    "dev:server": "nodemon --exec ts-node --transpile-only src/server/index.ts",
+    "build": "npm run build:client && npm run build:server",
     "build:client": "vite build",
     "build:server": "tsc -p tsconfig.server.json",
     "start": "node dist/server/index.js",
@@ -67,6 +67,7 @@
     "npm-run-all": "^4.1.5",
     "nyc": "^15.1.0",
     "pg-connection-string": "^2.6.2",
+    "pino-pretty": "^10.2.3",
     "supertest": "^6.3.3",
     "testcontainers": "^10.2.1",
     "ts-jest": "^29.1.1",

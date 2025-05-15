@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import restaurantRoutes from './restaurantRoutes';
 
 const router = Router();
 
@@ -7,8 +6,5 @@ const router = Router();
 router.get('/health', (_req, res) => {
   res.json({ status: 'ok', time: new Date().toISOString() });
 });
-
-// Restaurant routes
-router.use('/restaurants', restaurantRoutes);
 
 export default router;
