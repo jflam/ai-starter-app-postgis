@@ -17,7 +17,7 @@ A modern full-stack application template with spatial data capabilities built wi
   - Find restaurants within a specified radius
   - Calculate distances between points
   - Store and retrieve geographic coordinates
-- Comprehensive testing setup with Vitest, Jest, and Playwright
+- Comprehensive testing setup with Vitest and Playwright
 - Docker Compose configuration for local development
 - Multi-stage Docker build for production
 
@@ -128,9 +128,9 @@ npm run build:client # Build client only
 npm run build:server # Build server only
 
 # Testing
-npm run test         # Run all tests
-npm run test:unit    # Run unit tests
-npm run test:api     # Run API tests
+npm run test         # Run all unit and API tests
+npm run test:client  # Run client tests
+npm run test:server  # Run server tests
 npm run test:e2e     # Run end-to-end tests
 
 # Quality
@@ -156,10 +156,9 @@ npm run lint         # Run ESLint
 - SWR for data fetching
 
 ### Testing
-- Vitest 3.0.0
-- Jest 30.x
-- Playwright 1.44.x
-- Testcontainers
+- Vitest 3.1.3 (unified test runner for client and server)
+- Playwright 1.44.x (end-to-end tests)
+- Testcontainers (database testing)
 
 ## Docker Support
 

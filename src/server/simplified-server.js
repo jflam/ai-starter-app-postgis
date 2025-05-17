@@ -2,6 +2,10 @@
 import express from 'express';
 import cors from 'cors';
 import { pool } from './db.js';
+import * as dotenv from 'dotenv';
+
+// Make sure environment variables are loaded
+dotenv.config();
 
 // Create Express application
 const app = express();

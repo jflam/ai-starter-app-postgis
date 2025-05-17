@@ -4,14 +4,26 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 // Create a database connection pool
-const connectionString = process.env.DATABASE_URL;
+let connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
   console.warn('DATABASE_URL environment variable is not set, using default connection');
 }
 
+// Determine the default host based on whether we're in Docker
+const isInDocker = process.env.RUNNING_IN_DOCKER === 'true';
+const defaultHost = isInDocker ? 'postgres' : 'localhost';
+const defaultConnectionString = `postgres://postgres:postgres@${defaultHost}:5432/app_db`;
+
+// If running outside Docker but the connection string has 'postgres' hostname,
+// replace it with 'localhost' so it can connect
+if (!isInDocker && connectionString && connectionString.includes('@postgres:')) {
+  console.log('Replacing postgres hostname with localhost for non-Docker environment');
+  connectionString = connectionString.replace('@postgres:', '@localhost:');
+}
+
 export const pool = new Pool({
-  connectionString: connectionString || 'postgres://postgres:postgres@localhost:5432/app_db',
+  connectionString: connectionString || defaultConnectionString,
   // For Docker environments, set more aggressive timeouts
   connectionTimeoutMillis: 5000,
   idleTimeoutMillis: 30000,

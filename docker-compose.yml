@@ -33,6 +33,7 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/app_db
       - NODE_ENV=development
       - PORT=3001
+      - RUNNING_IN_DOCKER=true
     command: sh -c "./scripts/wait-for-it.sh postgres:5432 -- npm run migrate && npm run seed && npm run dev"
 
 volumes:

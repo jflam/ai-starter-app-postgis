@@ -1,11 +1,16 @@
-import { PostgreSqlContainer } from 'testcontainers';
-import { execaCommand } from 'execa';
+import { GenericContainer } from 'testcontainers';
+import { execa } from 'execa';
 import path from 'path';
 
 export async function startPg() {
   // Start PostGIS container
-  const container = await new PostgreSqlContainer('postgis/postgis:15-3.4')
+  const container = await new GenericContainer('postgis/postgis:15-3.4')
     .withExposedPorts(5432)
+    .withEnvironment({
+      POSTGRES_USER: 'postgres',
+      POSTGRES_PASSWORD: 'postgres',
+      POSTGRES_DB: 'postgres'
+    })
     .withCommand([
       'postgres', 
       '-c', 'shared_buffers=256MB', 
@@ -14,32 +19,32 @@ export async function startPg() {
     .start();
 
   // Set environment variable for database connection
-  const connectionString = container.getConnectionUri();
+  const port = container.getMappedPort(5432);
+  const connectionString = `postgres://postgres:postgres@localhost:${port}/postgres`;
   process.env.DATABASE_URL = connectionString;
   
   console.log(`Database container started on port ${container.getMappedPort(5432)}`);
   console.log(`Connection string: ${connectionString}`);
 
   // Run migrations
-  await execaCommand('npm run migrate', { stdio: 'inherit' });
+  await execa('npm', ['run', 'migrate'], { stdio: 'inherit' });
   
   // Run seed script
-  await execaCommand('npm run seed', { stdio: 'inherit' });
+  await execa('npm', ['run', 'seed'], { stdio: 'inherit' });
 
   return container;
 }
 
-// For global setup/teardown with Jest
+// For global setup/teardown with Vitest
 export async function setup() {
   const container = await startPg();
-  // @ts-ignore - Store the container for teardown
-  global.__PG_CONTAINER__ = container;
+  // Store the container reference to be used in teardown
+  return container;
 }
 
-export async function teardown() {
-  // @ts-ignore - Retrieve and stop the container
-  const container = global.__PG_CONTAINER__;
+export async function teardown(container: any) {
   if (container) {
     await container.stop();
+    console.log('Database container stopped');
   }
 }

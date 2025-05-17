@@ -18,6 +18,12 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
     },
-    include: ['./tests/client/**/*.{test,spec}.{ts,tsx}'],
+    include: ['./tests/{client,server}/**/*.{test,spec}.{ts,tsx}'],
+    // Run tests serially to avoid database conflicts
+    sequence: {
+      setupFiles: 'list',
+    },
+    // We can disable threads for safety with database tests
+    threads: false,
   },
 });
