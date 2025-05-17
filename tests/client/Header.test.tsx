@@ -5,7 +5,7 @@ import Header from '../../src/client/components/Header';
 describe('Header component', () => {
   it('renders the title text', () => {
     render(<Header />);
-    const heading = screen.getByText('Restaurant Explorer');
+    const heading = screen.getByText('Top Asian Noodles');
     expect(heading).toBeDefined();
   });
 });

@@ -4,7 +4,7 @@ test('homepage loads and shows map', async ({ page }) => {
   await page.goto('/');
   
   // Check for header text
-  await expect(page.locator('h1')).toContainText('Restaurant Explorer');
+  await expect(page.locator('h1')).toContainText('Top Asian Noodles');
   
   // Check if map container is rendered
   await expect(page.locator('.leaflet-container')).toBeVisible({ timeout: 5000 });
