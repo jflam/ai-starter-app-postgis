@@ -1,8 +1,8 @@
-# React 19 + Vite 6 + Express 5 + PostgreSQL 15/PostGIS 3.4 Starter App
+# Modern Spatial Data Web Application Template
 
 A modern full-stack application template with spatial data capabilities built with:
 
-- React 19 (RC) with TypeScript for the frontend
+- React with TypeScript for the frontend
 - Vite 6 for fast development and optimized builds
 - Express 5 (RC) for the backend API
 - PostgreSQL 15 with PostGIS 3.4 for spatial data
@@ -25,7 +25,7 @@ A modern full-stack application template with spatial data capabilities built wi
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/ai-starter-app-postgis.git
+git clone https://github.com/jflam/ai-starter-app-postgis.git
 cd ai-starter-app-postgis
 
 # Install dependencies
@@ -140,12 +140,12 @@ npm run lint         # Run ESLint
 - Express 5.0.0-rc.1
 - PostgreSQL 15.5
 - PostGIS 3.4.2
-- node-pg-migrate 8.x
+- node-pg-migrate 7.x
 - pg driver 8.x
 - Zod for validation
 
 ### Frontend
-- React 19 RC
+- React 18
 - Vite 6.0.0
 - Leaflet for maps
 - SWR for data fetching
@@ -157,7 +157,7 @@ npm run lint         # Run ESLint
 
 ## Docker Support
 
-The project includes Docker and Docker Compose configuration for both development and production.
+The project includes Docker and Docker Compose configuration for both development and production environments.
 
 ### Development
 
@@ -176,8 +176,10 @@ docker-compose logs -f
 docker build -t ai-starter-app-postgis:latest .
 
 # Run container
-docker run -p 3001:3001 -e DATABASE_URL=postgres://user:pass@host:5432/db ai-starter-app-postgis:latest
+docker run -p 3001:3001 -e DATABASE_URL=******host:5432/db ai-starter-app-postgis:latest
 ```
+
+For detailed Docker setup instructions, container configurations, and production deployment options, see the [Docker Guide](docs/docker.md).
 
 ## License
 
