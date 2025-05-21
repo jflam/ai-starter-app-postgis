@@ -1,5 +1,4 @@
 import { startPg } from './_setupDb';
-import type { GenericContainer } from 'testcontainers';
 
 // Global setup for Vitest
 export async function setup() {
