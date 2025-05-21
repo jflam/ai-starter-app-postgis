@@ -32,6 +32,9 @@ cd ai-starter-app-postgis
 npm install
 
 # Set up environment variables
+# You will register and obtain a free Mapbox token otherwise the map will not render
+# https://docs.mapbox.com/help/getting-started/access-tokens/
+
 cp .env.example .env
 
 # Start development servers (automatically starts database, runs migrations, and opens the browser)
