@@ -113,12 +113,19 @@ async function waitForDatabase() {
 // Check database and run migrations if needed
 async function setupDatabase() {
   try {
+    // Set the correct DATABASE_URL for local development
+    const localDbUrl = "postgres://postgres:postgres@localhost:5432/app_db";
+    log(`Using database URL: ${localDbUrl}`, colors.blue);
+    
+    // Set environment variable for child processes
+    const dbEnv = { ...process.env, DATABASE_URL: localDbUrl };
+    
     // Check database connection
-    await runCommand('node', [path.join(__dirname, 'check-db.js')]);
+    await runCommand('node', [path.join(__dirname, 'check-db.js')], { env: dbEnv });
     
     // Run migrations
     log('Running database migrations...', colors.blue);
-    await runCommand('npm', ['run', 'migrate']);
+    await runCommand('npm', ['run', 'migrate'], { env: dbEnv });
     
     log('Database is set up and ready to go!', colors.green);
   } catch (error) {
