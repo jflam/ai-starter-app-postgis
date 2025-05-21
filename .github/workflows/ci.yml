@@ -59,7 +59,7 @@ jobs:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
 
       - name: Run tests with coverage
-        run: npm run test && npx nyc report
+        run: mkdir -p .nyc_output && npm run test && npx nyc report
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
       - name: Upload to Codecov
