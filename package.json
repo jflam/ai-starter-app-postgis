@@ -11,6 +11,7 @@
     "start": "node src/server/simplified-server.js",
     "seed": "node scripts/seed.js",
     "migrate": "node-pg-migrate up -m migrations",
+    "setup-test-db": "bash ./scripts/setup-test-db.sh",
     "test": "vitest run --coverage",
     "test:client": "vitest run tests/client",
     "test:server": "vitest run tests/server",
