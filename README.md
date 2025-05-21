@@ -31,24 +31,19 @@ cd ai-starter-app-postgis
 # Install dependencies
 npm install
 
-# Start PostgreSQL and PostGIS with Docker
-docker-compose up -d postgres
-
 # Set up environment variables
 cp .env.example .env
 
-# Run migrations
-npm run migrate
-
-# Seed the database
-npm run seed
-
-# Verify database setup
-node scripts/check-db.js
-
-# Start development servers (both frontend and backend)
+# Start development servers (automatically starts database, runs migrations, and opens the browser)
 npm run dev
 ```
+
+> **Note:** The `npm run dev` command will automatically:
+> - Start PostgreSQL and PostGIS with Docker
+> - Wait for the database to be ready
+> - Run migrations if needed
+> - Start frontend and backend development servers
+> - Open your default browser to the frontend application
 
 ## Database
 
@@ -114,7 +109,7 @@ project-root/
 
 ```bash
 # Development
-npm run dev          # Start both client and server
+npm run dev          # Start Docker database, both client and server, and open browser
 npm run dev:client   # Start Vite dev server only
 npm run dev:server   # Start Express server only
 
