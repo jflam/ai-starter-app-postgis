@@ -9,7 +9,7 @@ export async function startPg() {
     .withEnvironment({
       POSTGRES_USER: 'postgres',
       POSTGRES_PASSWORD: 'postgres',
-      POSTGRES_DB: 'postgres'
+      POSTGRES_DB: 'test_db'
     })
     .withCommand([
       'postgres', 
@@ -20,7 +20,7 @@ export async function startPg() {
 
   // Set environment variable for database connection
   const port = container.getMappedPort(5432);
-  const connectionString = `postgres://postgres:postgres@localhost:${port}/postgres`;
+  const connectionString = `postgres://postgres:postgres@localhost:${port}/test_db`;
   process.env.DATABASE_URL = connectionString;
   
   console.log(`Database container started on port ${container.getMappedPort(5432)}`);

@@ -18,7 +18,7 @@ if (process.env.RUNNING_IN_DOCKER !== 'true') {
     process.env.DATABASE_URL = process.env.DATABASE_URL.replace('@postgres:', '@localhost:');
   } else {
     // Fallback to a standard local connection
-    process.env.DATABASE_URL = 'postgres://postgres:postgres@localhost:5432/app_db';
+    process.env.DATABASE_URL = 'postgres://postgres:postgres@localhost:5432/test_db';
   }
 }
 

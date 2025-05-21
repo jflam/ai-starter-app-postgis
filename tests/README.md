@@ -54,3 +54,40 @@ This approach simplifies testing by:
 - Each set of tests can be run independently
 - Server tests are run with `// @vitest-environment node` annotation
 - Tests run serially to avoid database conflicts
+
+## E2E Test Data Considerations
+
+- E2E tests depend on stable test data for reliable operation
+- The tests assume certain data characteristics (e.g., specific cuisines, ratings)
+- Changing seed data may require updating test expectations
+
+## E2E Test Configuration
+
+- E2E tests using Playwright are **excluded from CI/CD pipeline** to simplify CI execution
+- Tests have a global setup script (`tests/e2e/setup/global-setup.ts`) that:
+  - Runs database migrations before tests start
+  - Seeds the database with sample data
+  - Ensures consistent test environment
+
+### Running E2E Tests Locally
+
+To run the Playwright E2E tests on your local machine:
+
+1. Ensure PostgreSQL with PostGIS is running (`docker-compose up -d postgres`)
+2. Install Playwright browsers if not already installed:
+   ```bash
+   npx playwright install
+   ```
+3. Run the tests:
+   ```bash
+   npm run test:e2e
+   ```
+
+For browser-specific tests or to run in headed mode:
+```bash
+# Run tests in a specific browser
+npx playwright test --project=chromium
+
+# Run tests in headed mode (with browser visible)
+npx playwright test --headed
+```

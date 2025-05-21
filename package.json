@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev": "npm run migrate && concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "vite",
     "dev:server": "nodemon src/server/simplified-server.js",
     "build": "npm run build:client",
@@ -11,6 +11,7 @@
     "start": "node src/server/simplified-server.js",
     "seed": "node scripts/seed.js",
     "migrate": "node-pg-migrate up -m migrations",
+    "setup-test-db": "bash ./scripts/setup-test-db.sh",
     "test": "vitest run --coverage",
     "test:client": "vitest run tests/client",
     "test:server": "vitest run tests/server",
@@ -40,6 +41,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@playwright/test": "^1.40.0",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.1.2",
