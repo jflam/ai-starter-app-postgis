@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev": "npm run migrate && concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "vite",
     "dev:server": "nodemon src/server/simplified-server.js",
     "build": "npm run build:client",
