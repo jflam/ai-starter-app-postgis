@@ -1,6 +1,6 @@
-# Modern Spatial Data Web Application Template
+# Modern Spatial Data Web Application Starter App
 
-A modern full-stack application template with spatial data capabilities built with:
+A modern full-stack application starter app with spatial data capabilities built with:
 
 - React with TypeScript for the frontend
 - Vite 6 for fast development and optimized builds
