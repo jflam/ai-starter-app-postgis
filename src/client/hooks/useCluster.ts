@@ -3,6 +3,12 @@ import L from 'leaflet';
 import 'leaflet.markercluster';
 import { Restaurant } from './useRestaurants';
 
+// Add declaration for missing type from leaflet.markercluster
+declare module 'leaflet' {
+  function markerClusterGroup(options?: any): L.MarkerClusterGroup;
+  interface MarkerClusterGroup extends L.FeatureGroup {}
+}
+
 export function useCluster(map: L.Map | null, restaurants: Restaurant[]) {
   useEffect(() => {
     if (!map || !restaurants.length) return;

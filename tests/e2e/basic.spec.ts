@@ -29,7 +29,7 @@ test('can change search radius', async ({ page }) => {
   
   // Get the initial number of restaurants
   await page.waitForSelector('.restaurant-card');
-  const initialCount = await page.locator('.restaurant-card').count();
+  const _initialCount = await page.locator('.restaurant-card').count();
   
   // Change the search radius
   await rangeInput.fill('15');

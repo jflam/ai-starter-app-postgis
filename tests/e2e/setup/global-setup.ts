@@ -1,7 +1,7 @@
 import { FullConfig } from '@playwright/test';
 import { execSync } from 'child_process';
 
-async function globalSetup(config: FullConfig) {
+async function globalSetup(_config: FullConfig) {
   console.log('Running database migrations before E2E tests...');
   
   try {

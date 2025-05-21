@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 const restaurantCardSelector = '.restaurant-card';
-const mapContainerSelector = '.leaflet-container';
+const _mapContainerSelector = '.leaflet-container';
 
 test('restaurant list loads with cards', async ({ page }) => {
   await page.goto('/');
